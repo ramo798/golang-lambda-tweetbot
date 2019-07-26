@@ -104,6 +104,8 @@ func makesentence(rainflag bool, stormflag bool, snowflag bool) {
 	if rainflag || stormflag || rainflag {
 		sentence += "が発令されています。"
 		tweet(sentence)
+	} else {
+		fmt.Println("警報なし")
 	}
 
 	// fmt.Println(sentence)
