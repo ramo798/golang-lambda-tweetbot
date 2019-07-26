@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/ChimeraCoder/anaconda"
 	"github.com/PuerkitoBio/goquery"
@@ -28,21 +29,21 @@ func main() {
 	if rain.Text() == "●" {
 		rainflag = true
 	}
-	fmt.Println(rainflag)
+	// fmt.Println(rainflag)
 
 	//暴風警報の判定　#WarnTableTable > tbody > tr:nth-child(3) > td:nth-child(6)
 	storm := innertext.Next().Next().Next()
 	if storm.Text() == "●" {
 		stormflag = true
 	}
-	fmt.Println(stormflag)
+	// fmt.Println(stormflag)
 
 	//大雪警報の判定　#WarnTableTable > tbody > tr:nth-child(3) > td:nth-child(8)
 	snow := innertext.Next().Next().Next().Next().Next()
 	if snow.Text() == "●" {
 		snowflag = true
 	}
-	fmt.Println(snowflag)
+	// fmt.Println(snowflag)
 
 	//テストコード　td:nth-child(4)
 	// var testflag = false
@@ -57,8 +58,7 @@ func main() {
 	//typeはstring
 	// fmt.Println(reflect.TypeOf(test.Text()))
 
-	// text := "あ"
-	// tweet(text)
+	makesentence(rainflag, stormflag, snowflag)
 }
 
 func tweet(tweettext string) {
@@ -73,4 +73,38 @@ func tweet(tweettext string) {
 
 	fmt.Println(tweet.Text)
 
+}
+
+func makesentence(rainflag bool, stormflag bool, snowflag bool) {
+	var sentence string
+
+	// テスト用
+	// rainflag = true
+
+	sentence += "【BOT】"
+
+	t := time.Now()
+	const layout = "本日、15:04:05 JST 時点の和歌山市で"
+	// fmt.Println(reflect.TypeOf(t.Format(layout)))
+	// fmt.Println(t.Format(layout))
+	sentence += t.Format(layout)
+
+	if rainflag {
+		sentence += "大雨警報 "
+	}
+
+	if stormflag {
+		sentence += "暴風警報 "
+	}
+
+	if snowflag {
+		sentence += "大雪警報 "
+	}
+
+	if rainflag || stormflag || rainflag {
+		sentence += "が発令されています。"
+		tweet(sentence)
+	}
+
+	// fmt.Println(sentence)
 }
