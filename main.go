@@ -8,13 +8,16 @@ import (
 )
 
 func main() {
-	anaconda.SetConsumerKey(os.Getenv("CONSUMER_KEY"))
-	anaconda.SetConsumerSecret(os.Getenv("CONSUMER_SECRET"))
-	api := anaconda.NewTwitterApi(os.Getenv("ACCESS_TOKEN"), os.Getenv("ACCESS_TOKEN_SECRET"))
+	text := "あ"
+	tweet(text)
+}
 
-	text := "自作bot test2"
+func tweet(tweettext string) {
+	anaconda.SetConsumerKey(os.Getenv("TWITTERCONSUMER_KEY"))
+	anaconda.SetConsumerSecret(os.Getenv("TWITTERCONSUMER_SECRET"))
+	api := anaconda.NewTwitterApi(os.Getenv("TWITTERACCESS_TOKEN"), os.Getenv("TWITTERACCESS_TOKEN_SECRET"))
 
-	tweet, err := api.PostTweet(text, nil)
+	tweet, err := api.PostTweet(tweettext, nil)
 	if err != nil {
 		panic(err)
 	}
