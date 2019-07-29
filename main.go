@@ -3,13 +3,67 @@ package main
 import (
 	"fmt"
 	"os"
+	"runtime"
 	"time"
 
 	"github.com/ChimeraCoder/anaconda"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/carlescere/scheduler"
 )
 
 func main() {
+	job := func() {
+		checker()
+	}
+	jobchecker := func() {
+		fmt.Println("wetherbot is running")
+	}
+
+	scheduler.Every(30).Minutes().Run(jobchecker)
+	scheduler.Every().Day().At("08:30").Run(job)
+	scheduler.Every().Day().At("08:45").Run(job)
+	scheduler.Every().Day().At("08:58").Run(job)
+
+	runtime.Goexit()
+}
+
+func makesentence(rainflag bool, stormflag bool, snowflag bool) {
+	var sentence string
+
+	// テスト用
+	// rainflag = true
+
+	sentence += "【BOT】"
+
+	t := time.Now()
+	const layout = "本日、15:04:05 JST 時点の和歌山市で"
+	// fmt.Println(reflect.TypeOf(t.Format(layout)))
+	// fmt.Println(t.Format(layout))
+	sentence += t.Format(layout)
+
+	if rainflag {
+		sentence += "大雨警報 "
+	}
+
+	if stormflag {
+		sentence += "暴風警報 "
+	}
+
+	if snowflag {
+		sentence += "大雪警報 "
+	}
+
+	if rainflag || stormflag || rainflag {
+		sentence += "が発令されています。"
+		tweet(sentence)
+	} else {
+		fmt.Println("警報なし")
+	}
+
+	// fmt.Println(sentence)
+}
+
+func checker() {
 	doc, err := goquery.NewDocument("https://www.jma.go.jp/jp/warn/336_table.html")
 	if err != nil {
 		panic(err)
@@ -73,40 +127,4 @@ func tweet(tweettext string) {
 
 	fmt.Println(tweet.Text)
 
-}
-
-func makesentence(rainflag bool, stormflag bool, snowflag bool) {
-	var sentence string
-
-	// テスト用
-	// rainflag = true
-
-	sentence += "【BOT】"
-
-	t := time.Now()
-	const layout = "本日、15:04:05 JST 時点の和歌山市で"
-	// fmt.Println(reflect.TypeOf(t.Format(layout)))
-	// fmt.Println(t.Format(layout))
-	sentence += t.Format(layout)
-
-	if rainflag {
-		sentence += "大雨警報 "
-	}
-
-	if stormflag {
-		sentence += "暴風警報 "
-	}
-
-	if snowflag {
-		sentence += "大雪警報 "
-	}
-
-	if rainflag || stormflag || rainflag {
-		sentence += "が発令されています。"
-		tweet(sentence)
-	} else {
-		fmt.Println("警報なし")
-	}
-
-	// fmt.Println(sentence)
 }
