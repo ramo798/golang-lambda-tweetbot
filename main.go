@@ -3,28 +3,16 @@ package main
 import (
 	"fmt"
 	"os"
-	"runtime"
 	"time"
 
 	"github.com/ChimeraCoder/anaconda"
 	"github.com/PuerkitoBio/goquery"
-	"github.com/carlescere/scheduler"
 )
 
 func main() {
-	job := func() {
-		checker()
-	}
-	jobchecker := func() {
-		fmt.Println("wetherbot is running")
-	}
 
-	scheduler.Every(30).Minutes().Run(jobchecker)
-	scheduler.Every().Day().At("08:30").Run(job)
-	scheduler.Every().Day().At("08:45").Run(job)
-	scheduler.Every().Day().At("08:58").Run(job)
+	checker()
 
-	runtime.Goexit()
 }
 
 func makesentence(rainflag bool, stormflag bool, snowflag bool) {
