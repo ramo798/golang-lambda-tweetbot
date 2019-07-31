@@ -1,4 +1,4 @@
-# golang-scraping-tweetbot
+# golang-scraping-disasteralert-tweetbot
 
 和歌山市の警報情報(https://www.jma.go.jp/jp/warn/336_table.html) からgoquerydでスクレイピングして、大雨、暴風、大雪の警報が発令されているときにTwitterに自動で呟けるBOT  
 
